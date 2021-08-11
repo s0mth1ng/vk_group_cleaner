@@ -1,7 +1,7 @@
 import requests
 from typing import List
 from collections import namedtuple
-import re
+from urllib.parse import urlparse, parse_qs
 
 
 GroupInfo = namedtuple('GroupInfo', ['id', 'name', 'url'])
@@ -15,7 +15,7 @@ class ApiException(Exception):
 class VkApi:
 
     def __authorize(self) -> str:
-        """Returns user token"""
+        """Returns user token and saves user id"""
         url = 'https://oauth.vk.com/authorize'
         data = {
             'client_id': 7924582,
@@ -27,10 +27,9 @@ class VkApi:
         print(f'First of all you need to authorize.\n\n1. Go to {go_to}')
         token_url = input(
             'Authorize and paste below the url of the page you\'ve been redirected to\n')
-        match = re.search(r'access_token=(\w+)&', token_url)
-        if match is None:
-            raise ValueError("Url does not contain access token.")
-        return match.group(0)
+        parsed = parse_qs(urlparse(token_url).fragment)
+        self.__uid = int(parsed['user_id'][0])
+        return parsed['access_token'][0]
 
     def __init__(self):
         self.__default_params = {
@@ -48,16 +47,9 @@ class VkApi:
             raise SystemExit(e)
         return r.json()
 
-    def get_user_id(self, user: str) -> int:
-        data = self.__send_request('users.get', {'user_ids': user})
-        try:
-            return data['response'][0]['id']
-        except KeyError:
-            raise ApiException("User not found.")
-
-    def get_groups(self, uid: int) -> List[GroupInfo]:
+    def get_groups(self) -> List[GroupInfo]:
         data = self.__send_request(
-            'groups.get', {'user_id': uid, 'extended': True})
+            'groups.get', {'user_id': self.__uid, 'extended': True})
         try:
             items = data['response']['items']
             return [GroupInfo(i['id'], i['name'],
