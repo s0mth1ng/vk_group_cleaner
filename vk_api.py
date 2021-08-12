@@ -18,7 +18,7 @@ class VkApi:
         """Returns user token and saves user id"""
         url = 'https://oauth.vk.com/authorize'
         data = {
-            'client_id': 7924582,
+            'client_id': '7924582',
             'redirect_uri': 'https://oauth.vk.com/blank.html',
             'scope': 'groups',
             'response_type': 'token'
