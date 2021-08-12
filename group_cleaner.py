@@ -1,5 +1,5 @@
 from os import pardir
-from vk_api import VkApi
+from vk_api import ApiException, GroupInfo, VkApi
 import argparse
 from typing import List
 
@@ -11,7 +11,7 @@ def get_args():
     return parser.parse_args()
 
 
-def select_groups(groups, at_once) -> List[int]:
+def select_groups(groups, at_once) -> List[GroupInfo]:
     """Returns list of selected groups"""
     selected = []
     for start in range(0, len(groups), at_once):
@@ -40,6 +40,19 @@ def main():
     groups = api.get_groups()
     args = get_args()
     selected = select_groups(groups, args.at_once)
+    if not get_confirmation(selected):
+        print('Aborting...')
+        exit(0)
+    error_counter = 0
+    for g in selected:
+        try:
+            api.leave_group(g.id)
+            print(f'Successfully left "{g.name}" :)')
+        except ApiException as e:
+            error_counter += 1
+            print(f'Cannot leave "{g.name} :("')
+            print(f'Error message: {str(e)}')
+    print(f'Total errors: {error_counter}. Bye')
 
 
 if __name__ == '__main__':
