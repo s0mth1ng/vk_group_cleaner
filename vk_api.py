@@ -59,5 +59,5 @@ class VkApi:
 
     def leave_group(self, gid: int) -> None:
         data = self.__send_request('groups.leave', {'group_id': gid})
-        if data.get('response', 0) != 0:
+        if data.get('response', 0) != 1:
             raise ApiException(data['error']['error_msg'])
