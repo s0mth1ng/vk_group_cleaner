@@ -42,11 +42,11 @@ def main(args):
         print('Aborting...')
         exit(0)
     error_counter = 0
-    leaved = []
+    left = []
     for g in selected:
         try:
             api.leave_group(g.id)
-            leaved.append(g)
+            left.append(g)
             print(f'Successfully left "{g.name}" :)')
         except ApiException as e:
             error_counter += 1
@@ -54,7 +54,7 @@ def main(args):
             print(f'Error message: {str(e)}')
     if args.to_csv:
         print('Saving to unsubscribed.csv...')
-        save_to_csv(leaved)
+        save_to_csv(left)
     print(f'Total errors: {error_counter}. Bye')
 
 
