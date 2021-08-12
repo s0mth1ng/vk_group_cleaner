@@ -12,7 +12,7 @@ def get_args():
 
 
 def select_groups(groups, at_once) -> List[int]:
-    """Returns list with group_id of selected groups"""
+    """Returns list of selected groups"""
     selected = []
     for start in range(0, len(groups), at_once):
         for ind, g in enumerate(groups[start:start+at_once]):
@@ -20,10 +20,19 @@ def select_groups(groups, at_once) -> List[int]:
         ids = list(
             map(int, input('Which one (write numbers separated with spaces)? ').split()))
 
-        # transform relative indices to group ids
-        ids = list(map(lambda id: groups[id + start - 1].id, ids))
+        # transform relative indices to group
+        ids = list(map(lambda id: groups[id + start - 1], ids))
         selected += ids
     return selected
+
+
+def get_confirmation(groups) -> bool:
+    """Ask user for confirmation"""
+    print('Chosen groups:')
+    for ind, g in enumerate(groups):
+        print(f'{ind + 1}. {g.name}')
+    print(f'You will be unsubscribed from {len(groups)} groups.')
+    return True if input('Are you sure? (y/n) ').lower() == 'y' else False
 
 
 def main():
