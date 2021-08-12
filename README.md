@@ -1,5 +1,7 @@
 # Install dependencies 
 
+Inside a virtual environment: 
+
 ```
 pip install -r requirements.txt
 ```
@@ -7,7 +9,7 @@ pip install -r requirements.txt
 # Usage
 
 ```
-usage: group_cleaner.py [-h] [--at_once AT_ONCE] [--to_csv]
+usage: python group_cleaner.py [-h] [--at_once AT_ONCE] [--to_csv]
 
 optional arguments:
   -h, --help         show this help message and exit
