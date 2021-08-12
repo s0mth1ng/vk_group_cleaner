@@ -23,7 +23,7 @@ class VkApi:
             'scope': 'groups',
             'response_type': 'token'
         }
-        go_to = requests.Request('GET', url, data).prepare().url
+        go_to = requests.Request('GET', url, params=data).prepare().url
         print(f'First of all you need to authorize.\n\n1. Go to {go_to}')
         token_url = input(
             'Authorize and paste below the url of the page you\'ve been redirected to\n')
