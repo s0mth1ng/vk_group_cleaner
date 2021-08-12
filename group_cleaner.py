@@ -1,4 +1,3 @@
-from os import pardir
 from vk_api import ApiException, GroupInfo, VkApi
 import argparse
 from typing import List
