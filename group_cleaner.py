@@ -21,8 +21,7 @@ def select_groups(groups, at_once) -> List[GroupInfo]:
             map(int, input('Which one (write numbers separated with spaces)? ').split()))
 
         # transform relative indices to group
-        ids = list(map(lambda id: groups[id + start - 1], ids))
-        selected += ids
+        selected += list(map(lambda id: groups[id + start - 1], ids))
     return selected
 
 
