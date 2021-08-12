@@ -4,13 +4,6 @@ import argparse
 from typing import List
 
 
-def get_args():
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "--at_once", help="print that number of subscriptions at once", type=int, default=10)
-    return parser.parse_args()
-
-
 def select_groups(groups, at_once) -> List[GroupInfo]:
     """Returns list of selected groups"""
     selected = []
@@ -34,10 +27,9 @@ def get_confirmation(groups) -> bool:
     return True if input('Are you sure? (y/n) ').lower() == 'y' else False
 
 
-def main():
+def main(args):
     api = VkApi()
     groups = api.get_groups()
-    args = get_args()
     selected = select_groups(groups, args.at_once)
     if not get_confirmation(selected):
         print('Aborting...')
@@ -55,4 +47,7 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--at_once", help="print that number of subscriptions at once", type=int, default=10)
+    main(parser.parse_args())
